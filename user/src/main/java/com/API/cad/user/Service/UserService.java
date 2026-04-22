@@ -5,7 +5,7 @@ import com.API.cad.user.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -20,8 +20,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> getUser(Long id) {
-        return userRepository.findById(id);
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow();
     }
 
+    public List<User> findAllUsers(){
+        return userRepository.findAll();
+    }
+
+    public User updateUser(Long id, User user) {
+        User existingUser = userRepository.findById(id).orElseThrow();
+        existingUser.setName(user.getName());
+        existingUser.setPhoneNumber(user.getPhoneNumber());
+        return userRepository.save(existingUser);
+    }
+
+    public void deleteUser(Long id) {
+        User existingUser = userRepository.findById(id).orElseThrow();
+        userRepository.delete(existingUser);
+    }
 }
