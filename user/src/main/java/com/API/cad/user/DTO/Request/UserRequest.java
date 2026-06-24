@@ -1,17 +1,9 @@
-package com.API.cad.user.Entity;
+package com.API.cad.user.DTO.Request;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "USERS")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class UserRequest {
     private Long id;
     private String name;
     private String phoneNumber;
-
-    public User() {}
 
     public Long getId() {
         return id;

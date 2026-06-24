@@ -1,7 +1,11 @@
 package com.API.cad.user.Service;
 
+import com.API.cad.user.DTO.Request.UserRequest;
+import com.API.cad.user.DTO.Response.UserResponse;
 import com.API.cad.user.Entity.User;
+import com.API.cad.user.Mapper.UserMapper;
 import com.API.cad.user.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +14,19 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
-    public User register(User user) {
-        return userRepository.save(user);
+    public UserResponse create(UserRequest userRequest) {
+        User user = userMapper.toEntity(userRequest);
+        User savedUser = userRepository.save(user);
+        return userMapper.toDTO(savedUser);
     }
 
     public User findUserById(Long id) {
