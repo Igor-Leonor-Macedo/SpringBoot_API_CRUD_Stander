@@ -1,17 +1,12 @@
-package com.API.cad.user.Entity;
+package com.API.cad.user.DTO.Response;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "USERS")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class UserResponse {
     private Long id;
     private String name;
     private String phoneNumber;
 
-    public User() {}
+    public UserResponse(Long id, String name, String phoneNumber) {
+    }
 
     public Long getId() {
         return id;
