@@ -1,8 +1,14 @@
 package com.API.cad.user.DTO.Request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class UserRequest {
     private Long id;
+
+    @NotBlank(message = "The name is mandatory")
     private String name;
+
+    @NotBlank(message = "The Phone Number is mandatory")
     private String phoneNumber;
 
     public Long getId() {
