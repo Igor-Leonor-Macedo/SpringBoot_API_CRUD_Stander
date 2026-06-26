@@ -3,9 +3,9 @@ package com.API.cad.user.Service;
 import com.API.cad.user.DTO.Request.UserRequest;
 import com.API.cad.user.DTO.Response.UserResponse;
 import com.API.cad.user.Entity.User;
+import com.API.cad.user.Exception.ExistingPhoneNumber;
 import com.API.cad.user.Mapper.UserMapper;
 import com.API.cad.user.Repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +23,12 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserResponse create(UserRequest userRequest) {
+    public void create(UserRequest userRequest) {
+        if (userRepository.existsByPhoneNumber(userRequest.getPhoneNumber())) {
+            throw new ExistingPhoneNumber("Phone number already exists");
+        }
         User user = userMapper.toEntity(userRequest);
-        User savedUser = userRepository.save(user);
-        return userMapper.toDTO(savedUser);
+        userRepository.save(user);
     }
 
     public User findUserById(Long id) {

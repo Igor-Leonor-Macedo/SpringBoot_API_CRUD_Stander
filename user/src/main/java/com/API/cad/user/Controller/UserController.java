@@ -1,7 +1,6 @@
 package com.API.cad.user.Controller;
 
 import com.API.cad.user.DTO.Request.UserRequest;
-import com.API.cad.user.DTO.Response.UserResponse;
 import com.API.cad.user.Entity.User;
 import com.API.cad.user.Service.UserService;
 import jakarta.validation.Valid;
@@ -25,8 +24,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse create(@RequestBody @Valid UserRequest userRequest) {
-        return userService.create(userRequest);
+    public void create(@RequestBody @Valid UserRequest userRequest) {
+        userService.create(userRequest);
     }
 
     @GetMapping("/{id}")
