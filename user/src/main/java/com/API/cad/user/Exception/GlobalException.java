@@ -1,6 +1,7 @@
 package com.API.cad.user.Exception;
 
 import com.API.cad.user.Model.ErrorResponse;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalException {
@@ -22,17 +26,18 @@ public class GlobalException {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidation(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult()
-                .getFieldErrors()
-                .get(0)
-                .getDefaultMessage();
+    public ResponseEntity<ErrorResponse> argumentNotValid(
+            MethodArgumentNotValidException ex, WebRequest request) {
 
-        return new ErrorResponse(
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+
+        ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                message
-        );
+                message);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
 }
