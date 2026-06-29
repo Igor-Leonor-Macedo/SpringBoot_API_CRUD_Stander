@@ -1,9 +1,11 @@
 package com.API.cad.user.Controller;
 
 import com.API.cad.user.DTO.Request.UserRequest;
+import com.API.cad.user.DTO.Response.UserResponse;
 import com.API.cad.user.Entity.User;
 import com.API.cad.user.Service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> findUserById(@PathVariable @Positive(message = "O ID deve ser um número positivo") Long id) {
         return ResponseEntity.ok(userService.findUserById(id));
     }
 

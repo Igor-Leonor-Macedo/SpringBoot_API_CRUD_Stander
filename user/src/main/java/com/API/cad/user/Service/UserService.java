@@ -4,6 +4,7 @@ import com.API.cad.user.DTO.Request.UserRequest;
 import com.API.cad.user.DTO.Response.UserResponse;
 import com.API.cad.user.Entity.User;
 import com.API.cad.user.Exception.ExistingPhoneNumber;
+import com.API.cad.user.Exception.NotFoundUser;
 import com.API.cad.user.Mapper.UserMapper;
 import com.API.cad.user.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findUserById(Long id) {
-        return userRepository.findById(id).orElseThrow();
+    public UserResponse findUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundUser("Usuário não encontrado com id: " + id));
+        return userMapper.toDTO(user);
     }
 
     public List<User> findAllUsers(){
