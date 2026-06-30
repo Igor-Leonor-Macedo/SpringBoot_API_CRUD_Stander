@@ -8,6 +8,9 @@ import com.API.cad.user.Exception.NotFoundUser;
 import com.API.cad.user.Mapper.UserMapper;
 import com.API.cad.user.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,8 +40,9 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public List<User> findAllUsers(){
-        return userRepository.findAll();
+    public Page<UserResponse> findAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(userMapper::toDTO);
     }
 
     public User updateUser(Long id, User user) {
